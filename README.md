@@ -158,7 +158,7 @@ Required IAM policy for lambda role
 
 ### Exception
 
-Exceptions are supported via do_no_list.txt file. The file should be stored in s3, where lambda function will have access
+Exceptions are supported via do_not_list.txt file. The file should be stored in s3, where lambda function will have access
 to retrieve the file.  The file should contain list of users and or roles that should be excluded. The list is s3 object
 is configurable during CloudFormation deployment.
 
@@ -222,7 +222,7 @@ In CloudWatch Logs search for (examples):
     6. POLICY VERSION WAS SUCCESSFULLY CREATED
     7. policy matches
     8. end_execution # end of the program execution
-    9. start_execution # start of the program execution and it's configuration  
+    9. start_execution # start of the program execution and its configuration  
     
 
 ### Packaging & Deployment
