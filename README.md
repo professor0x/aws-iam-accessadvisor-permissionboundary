@@ -34,23 +34,23 @@ and its permissions boundaries.
 
 
 ### Features
-Access Advisor Permission Boundary automation script has benn created to help AWS customers achieve least privileged access as well
-as remove access form users and roles that have not been used within configurable expiration period. 
-The script provide two main functions: First it regularly review data from 
-AWS Access Advisor and provide ability to audit IAM roles, users and groups based on their previous access to services 
+Access Advisor Permissions Boundary automation script has been created to help AWS customers achieve least privileged access as well
+as remove access from users and roles that have not been used within configurable expiration period. 
+The script provide two main functions: First, it regularly reviews data from 
+AWS Access Advisor and provides ability to audit IAM roles, users and groups based on their previous access to services 
 as reported by AWS [Access Advisor](https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_access-advisor-view-data.html).  
 The data is then used by the script to tag IAM entities with:
  * number of services entities have access to,
  * number of services actually accessed in a configurable expiration period, and
- * and percentage of actual access that was used compared to granted.  
+ * percentage of actual access that was used compared to granted.  
  
-Second feature is based on the services entity used within the expiration period, the script generates a permissions boundary and applies it to the user or role entity, effectively limiting access to only services accessed during the defined period.  The supplied Cloudformation template deploys 
-the program into a lambda function as well as Cloudwatch Event that is configured to kick off Lambda function based 
+Second feature is based on the services entity used within the expiration period. The script generates a permissions boundary and applies it to the user or role entity, effectively limiting access to only services accessed during the defined period.  The supplied CloudFormation template deploys 
+the program into a Lambda function as well as CloudWatch Event that is configured to kick off Lambda function based 
 on defined time period.  The Lambda function can be configured to run regularly to review and adjust access given to 
 users to restricted unnecessary permissions and make defining least privileged access easier and more automated. 
 
 Tagging IAM entities with access summary data. Total permissions granted, permissions used and % of permissions used.
-Tagging with services used be the IAM entity. 
+Tagging with services used by the IAM entity. 
 
 #### Tag a user and/or role with:
 
@@ -58,19 +58,19 @@ Tagging with services used be the IAM entity.
     Permissions Granted - Total
     Permissions Unused - Total
 
-Configurable expiration period through Cloudformation template parameter allows permissions to be restricted based on 
+Configurable expiration period through CloudFormation template parameter allows permissions to be restricted based on 
 usage history and if permissions are unused they are restricted with permissions boundary reducing blast radius of each 
-AIM entity within AWS account. If service is not accessed within the expiration period 
-its, not included in permissions boundary.
+IAM entity within AWS account. If service is not accessed within the expiration period 
+it is not included in permissions boundary.
 
 Configurable exception list that can be saved as a file on S3 and accessed by the program during runtime. Make sure that
-the lambda function role has access to read the S3 object. 
+the Lambda function role has access to read the S3 object. 
 
 ### Installation
 
-Included Cloudformation template deploys everything required to run this program as a lambda function, as well as 
-time based Cloudwatch Event configured to be kicked off every 90 days.  This threshold can be changed in CF template.
-* For accounts with large number of IAM entities, lambda function may no have a enough time to finish assessing all entities. You may
+Included CloudFormation template deploys everything required to run this program as a Lambda function, as well as 
+time based CloudWatch Event configured to be kicked off every 90 days.  This threshold can be changed in CF template.
+* For accounts with large number of IAM entities, Lambda function may not have enough time to finish assessing all entities. You may
 consider deploying this program as a set of step functions or a container. 
 
 **Prerequisite: Latest boto3 SDK**
@@ -150,7 +150,7 @@ Required IAM policy for lambda role
                 "*"
             ],
             "Effect": "Allow",
-            "Sid": "CloudwatchLogs"
+            "Sid": "CloudWatchLogs"
         }
     ]
 }
@@ -160,7 +160,7 @@ Required IAM policy for lambda role
 
 Exceptions are supported via do_no_list.txt file. The file should be stored in s3, where lambda function will have access
 to retrieve the file.  The file should contain list of users and or roles that should be excluded. The list is s3 object
-is configurable during Cloudformation deployment.
+is configurable during CloudFormation deployment.
 
 1. Exclude from tagging
 2. Exclude from permissions boundary & policy creation
@@ -212,7 +212,7 @@ Logging is standardized using json format. Mostly :-)
 * message - any custom messages
 
 #### Searching Logs
-In Cloudwatch Logs search for (examples): 
+In CloudWatch Logs search for (examples): 
     
     1. start
     2. msgtype
@@ -227,7 +227,7 @@ In Cloudwatch Logs search for (examples):
 
 ### Packaging & Deployment
 
-For the included Cloudformation template, set handler to (the python file name should match the handler "accessadvisor_automation.py": 
+For the included CloudFormation template, set handler to (the python file name should match the handler "accessadvisor_automation.py": 
 
     accessadvisor_automation.lambda_handler
 
